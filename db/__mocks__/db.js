@@ -5,7 +5,12 @@ const connect = async () =>{
 }
 
 const findUser = async (obj) => {
-    await user.findOne().exec()
+   console.log("Mock Found User")
+   return Promise.resolve({
+    firstName: "Kalani",
+    email: "KMKitkouski@student.fullsail.edu",
+    password: "Bob"
+})
 }
 
 const saveUser = async (user) => {
