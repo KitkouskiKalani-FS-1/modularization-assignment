@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require("../models/user");
 const mongoose = require('mongoose');
 const {findUser, saveUser} = require('../../db/db');
+require('dotenv').config();
+router.use(express.json());
 
 router.post('/signup', async (req, res) =>{
     //find user by email {email: email}
@@ -50,15 +53,18 @@ router.post('/login', async (req, res) =>{
     //test for error 
     //test the result
     //message authorization successful
+    
     const user = await findUser({email: req.body.email})
     if(user){
         bcrypt.compare(req.body.password, user.password , (err, result)=>{
             if(err) return res.status(501).json({message: err.message})
     
             if(result){
+                const token = jwt.sign({email: user.email, id: user._id}, process.env.jwt_key)
                 res.status(200).json({
-                    message: "Login - POST, Authorization Successful",
+                    message: `Welcome ${user.firstName}`,
                     result: result,
+                    token: token
                 });
             } else {
                 res.status(401).json({
@@ -75,10 +81,18 @@ router.post('/login', async (req, res) =>{
 })
 
 router.get('/profile', (req, res) =>{
-    res.json({
-        message: 'User Profile - GET',
-        hostname: req.hostname,
+    try{
+        //header - Authorization: Bearer wje23o3jd232jdkj
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, process.env.jwt_key);
+
+        res.status(200).json({
+            decoded: decoded
     })
+    }
+    catch(error){
+        res.status(401).json({message: "Authorization Failed"})
+    }
 })
 
 module.exports = router;
