@@ -14,11 +14,8 @@ router.post('/signup', async (req, res) =>{
     //else encrypt password 
     //create new user object with hashed password
     //save user
-    // lastName: req.body.lastName,
-    // address: req.body.address,
-    // city: req.body.city,
-    // state: req.body.state,
-    // zip: req.body.zip,
+    // 
+
     const user = await findUser({email: req.body.email})
     if( user ){
         res.status(409).json({ message:"There is already a user with that email"})
@@ -31,6 +28,11 @@ router.post('/signup', async (req, res) =>{
                 const user = new User({
                     _id: mongoose.Types.ObjectId(),
                     firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    address: req.body.address,
+                    city: req.body.city,
+                    state: req.body.state,
+                    zip: req.body.zip,
                     email: req.body.email,
                     password: hash,
                 });
@@ -38,7 +40,7 @@ router.post('/signup', async (req, res) =>{
                 saveUser(user);
                 res.status(201).json({ 
                     message: 'Signup - POST',
-                    user, user
+                    user: user
                  })
             }
         })
@@ -60,8 +62,8 @@ router.post('/login', async (req, res) =>{
             if(err) return res.status(501).json({message: err.message})
     
             if(result){
-                const token = jwt.sign({email: user.email, id: user._id}, process.env.jwt_key)
-                res.status(200).json({
+                const token = jwt.sign({email: user.email, id: user._id, name: user.firstName}, process.env.jwt_key)
+                res.status(201).json({
                     message: `Welcome ${user.firstName}`,
                     result: result,
                     token: token
@@ -86,7 +88,7 @@ router.get('/profile', (req, res) =>{
         const token = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(token, process.env.jwt_key);
 
-        res.status(200).json({
+        res.status(201).json({
             decoded: decoded
     })
     }
