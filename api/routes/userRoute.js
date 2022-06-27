@@ -62,7 +62,7 @@ router.post('/login', async (req, res) =>{
             if(err) return res.status(501).json({message: err.message})
     
             if(result){
-                const token = jwt.sign({email: user.email, id: user._id, name: user.firstName}, process.env.jwt_key)
+                const token = jwt.sign({email: user.email, id: user._id, name: user.firstName, lastName: user.lastName, address: user.address, city: user.city, state: user.state, zip: user.zip}, process.env.jwt_key)
                 res.status(201).json({
                     message: `Welcome ${user.firstName}`,
                     result: result,

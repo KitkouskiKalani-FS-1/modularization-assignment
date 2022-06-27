@@ -1,0 +1,166 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Node JS POST API",
+        "version": "1.6.1",
+        "contact":{
+            "name": "Kalani Kitkouski",
+            "url": "www.google.com",
+            "email": "kmkitko@fullsail.edu"
+        }
+    },
+    "servers": [{
+        "url": "http://localhost:3001/users",
+        "description": "Local Server"
+    }],
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type":"http",
+                "scheme":"bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }   
+    ],
+    "paths": {
+        "/signup":{
+            "post":{
+                "tags":[ "Users Signup"],
+                "summary": "Users signup",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties":{
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "firstName": {
+                                        "type": "string",
+                                        "default": "Kalani"
+                                    },
+                                    "lastName": {
+                                        "type": "string",
+                                        "default": "Kitkouski"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "default": "100 avenue dr"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "default": "Dallas"
+                                    },
+                                    "state": {
+                                        "type": "string",
+                                        "default": "Texas"
+                                    },
+                                    "zip": {
+                                        "type": "integer",
+                                        "default": "75287"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "default": "kmk@fullsail.edu"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "default": "bob123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description": "Success"
+                    },
+                    "201":{
+                        "description": "Success"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Unable to Sign up"
+                    },
+                    "501":{
+                        "description": "Unable to Sign up"
+                    }
+                } 
+            } 
+        },
+        "/login":{
+            "post":{
+                "tags":[ "Users Login"],
+                "summary": "Users Login",
+                "requestBody":{
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties":{
+                                    "email": {
+                                        "type": "string",
+                                        "default": "kmk@fullsail.edu"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "default": "bob123"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description": "Successful Login"
+                    },
+                    "201":{
+                        "description": "Successful Login"
+                    },
+                    "404":{
+                        "description": "Not Found"
+                    },
+                    "500":{
+                        "description": "Unable to Login"
+                    },
+                    "501":{
+                        "description": "Unable to Login"
+                    }
+                } 
+            } 
+        },
+        "/profile": {
+            "get": {
+                "tags": ["User Profile"],
+                "summary": "User Profile",
+                "responses": {
+                    "200":{
+                        "description": "Successful Profile"
+                    },
+                    "201": {
+                        "description": "Successful Profile"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Unauthorized"
+                    },
+                    "501":{
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        }
+    }
+}

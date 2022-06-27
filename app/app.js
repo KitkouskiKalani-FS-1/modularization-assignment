@@ -3,6 +3,8 @@ const userRoute = require('../api/routes/userRoute');
 const app = express();
 const mongoose = require('mongoose');
 require('dotenv').config();
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocs = require("../config/swaggerOptions");
 
 app.use(
     express.urlencoded({
@@ -32,6 +34,10 @@ app.get('/', (req,res) =>{
 });
 
 app.use('/users', userRoute);
+
+//middleware to api-docs
+console.log(swaggerDocs);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use((req,res,next)=>{
     const error = new Error('Not Found!');
